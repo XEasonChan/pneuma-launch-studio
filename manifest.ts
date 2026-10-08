@@ -65,9 +65,14 @@ const TL_IGNORE = [
 
 const manifest: ModeManifest = {
   name: "tanka-launch",
-  version: "0.1.0",
+  version: "0.1.1",
   pneumaVersion: "^3.55.0",
   changelog: {
+    "0.1.1": [
+      "First-turn tick reports an uninitialized run without failing or consuming queued requests",
+      "A failed picked VO read check fails QC; an unavailable local model remains unchecked",
+      "Use the Python helper and explicit Remotion directories, with tools and models outside the workspace",
+    ],
     "0.1.0": [
       "A launch video from one idea: script, music and rhythm, voice, VO, assets, picture and sound, each with options on a node canvas",
       "Every stage from script to sound runs a countdown (30 min by default); when it runs out the recommended option is taken, and Auto-run takes them all the way to the rough cut",
