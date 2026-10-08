@@ -48,6 +48,28 @@ describe("ledger (pure)", () => {
 });
 
 describe("tl.mjs", () => {
+  test("first-turn tick reports an uninitialized run without creating state or consuming requests", () => {
+    mkdirSync(join(ws, "requests"));
+    const request = '{"id":"pending","action":"autorun","on":true}';
+    writeFileSync(join(ws, "requests/pending.json"), request);
+    const result = tl("tick", "--json");
+    expect(result.code).toBe(0);
+    expect(JSON.parse(result.stdout)).toEqual({ film: null, changes: [], requests: [], invalid: [] });
+    expect(tl("tick").stdout).toContain("init --idea");
+    expect(existsSync(join(ws, "film.json"))).toBe(false);
+    expect(existsSync(join(ws, "ledger.jsonl"))).toBe(false);
+    expect(readFileSync(join(ws, "requests/pending.json"), "utf8")).toBe(request);
+    expect(tl("pick", "script", "A").code).toBe(1);
+  });
+
+  test("tick still rejects malformed film.json", () => {
+    writeFileSync(join(ws, "film.json"), "{");
+    const result = tl("tick", "--json");
+    expect(result.code).toBe(1);
+    expect(result.stderr).toContain("not valid JSON");
+    expect(readFileSync(join(ws, "film.json"), "utf8")).toBe("{");
+  });
+
   test("init, status, and a second init refused without --force", () => {
     const r = tl("init", "--idea", "ACME remembers every thread", "--budget", "20");
     expect(r.code).toBe(0);

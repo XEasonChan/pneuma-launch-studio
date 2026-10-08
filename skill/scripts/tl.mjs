@@ -426,8 +426,16 @@ function cmdApprove(ws, positional, flags) {
 function cmdTick(ws, flags) {
   return withLock(ws, () => {
     const now = Date.now();
+    const raw = readFilm(ws);
+    // Startup invokes tick before the producer supplies an idea. Leave queued
+    // requests untouched until init creates the run; malformed JSON still fails.
+    if (raw === null) {
+      if (flags.json) out(JSON.stringify({ film: null, changes: [], requests: [], invalid: [] }, null, 2));
+      else out(`No film.json in ${ws}. Start with: tl.mjs init --idea "<text>"`);
+      return 0;
+    }
     const texts = readTexts(ws);
-    const film = loadFilmOrFail(ws);
+    const film = normalizeFilm(raw);
     const due = applyDue(ws, film, texts, now);
     if (flags.json) {
       out(JSON.stringify({ changes: due.changes, requests: due.outcomes, invalid: due.invalid }, null, 2));

@@ -88,6 +88,8 @@ local TTS (macOS `say`, espeak-ng on Linux), music from the seed library's proce
 ffmpeg gradients and test clips, SFX from the procedural kit. Every ledger row is `provider: "mock"` at $0 and every report says MOCK.
 `TL_NO_NETWORK=1` turns any real provider call into an error.
 
+For offline VO QC regressions, run `bash skill/scripts/py "$PWD/__tests__/qc-readcheck.py"` from this repository. It uses temporary JSON fixtures and makes no provider calls.
+
 ## Selftest
 
 The selftest drives every stage script end to end in mock mode on a tiny two-scene fixture (JA + EN): music options and the clock
@@ -97,13 +99,13 @@ finals, a mock delivery and the reminder stub — then checks that the ledger is
 `clock.json`, the arrangement, `scenes.json`, `timeline.json` and `lines.json`, and that every script answers `--help`.
 
 ```sh
-bash modes/tanka-launch/skill/scripts/selftest.sh            # a fresh temp workspace
-bash modes/tanka-launch/skill/scripts/selftest.sh /tmp/tl    # or a folder of your choice
+bash skill/scripts/selftest.sh            # a fresh temp workspace
+bash skill/scripts/selftest.sh /tmp/tl    # or a folder of your choice
 ```
 
 It needs ffmpeg, rubberband, a Python with numpy + scipy, a local TTS (`say` or espeak-ng) and, for the read check, whisper.cpp
 (`whisper-cli` + a model; without one the read check reports "unavailable"). It sets `TL_MOCK=1` and `TL_NO_NETWORK=1` and unsets
-every provider key. The stage machine's own tests run with `bun test modes/tanka-launch`.
+every provider key. The stage machine's own tests run with `bun test __tests__`.
 
 ## Layout
 

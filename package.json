@@ -1,6 +1,6 @@
 {
   "name": "pneuma-launch-studio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Launch Studio: a Pneuma mode that turns an idea or a selling point into finished launch videos (generic engine).",
   "pneuma": {

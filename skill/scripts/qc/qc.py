@@ -110,13 +110,13 @@ def readcheck_row(ws, lang=None):
     picked = {(l.get('id'), l.get('lang'), l.get('take')) for l in lines if isinstance(l, dict)}
     rows = [t for t in takes if (t.get('id'), t.get('lang'), t.get('take')) in picked] or takes
     label = 'VO read check (local whisper.cpp)'
-    if rc.get('available') is False or all(t.get('ok') is None for t in rows):
+    bad = [t for t in rows if t.get('ok') is False]; unk = [t for t in rows if t.get('ok') is None]
+    if not bad and (rc.get('available') is False or len(unk) == len(rows)):
         why = rc.get('unavailable') or 'no local whisper'
         return dict(id='vo-readcheck', status='unchecked', label=label, note=f'read check unavailable: {why} · listen to every line before approving')
-    bad = [t for t in rows if t.get('ok') is False]; unk = [t for t in rows if t.get('ok') is None]
     note = f"{len(rows) - len(bad) - len(unk)} / {len(rows)} picked takes read OK" + \
         (' · failed: ' + ', '.join('%s t%s' % (t.get('id'), t.get('take')) for t in bad[:6]) if bad else '') + (f" · unchecked: {len(unk)}" if unk else '')
-    return dict(id='vo-readcheck', status='pass' if not (bad or unk) else 'unchecked', label=label, note=note)
+    return dict(id='vo-readcheck', status='fail' if bad else 'unchecked' if unk else 'pass', label=label, note=note)
 
 
 def version_record(ws, kind, rec, review_rows, board=None, extra=()):
