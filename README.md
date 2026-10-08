@@ -10,13 +10,28 @@ no characters and no music. A run brings its own brand rule, logo, product scree
 
 ## Load it
 
-Pneuma loads this repo directly; no install step:
+Requires Pneuma Skills 3.55 or later (`pneumaVersion: ^3.55.0` in `manifest.ts`).
+
+Run it straight from GitHub:
 
 ```bash
-pneuma github:XEasonChan/pneuma-launch-studio --workspace ~/launch-runs/my-first-run
+bunx pneuma-skills github:XEasonChan/pneuma-launch-studio --workspace ./my-launch-run
 ```
 
-Or add it once and launch it from the app's mode list: `pneuma mode add github:XEasonChan/pneuma-launch-studio`.
+Or install it once and pick **Launch Studio** in the Launcher:
+
+```bash
+bunx pneuma-skills mode add github:XEasonChan/pneuma-launch-studio
+```
+
+With the desktop app installed, this link opens its install screen: `pneuma://mode/github%3AXEasonChan%2Fpneuma-launch-studio`
+
+Try the canvas without running anything paid: build the sample run, then open it in viewing mode.
+
+```bash
+bun viewer/fixtures/build-fixture.mjs /tmp/launch-demo roughcut
+bunx pneuma-skills github:XEasonChan/pneuma-launch-studio --workspace /tmp/launch-demo --viewing
+```
 
 ## Stages
 

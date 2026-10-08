@@ -1,0 +1,14 @@
+{
+  "name": "pneuma-launch-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Launch Studio: a Pneuma mode that turns an idea or a selling point into finished launch videos (generic engine).",
+  "pneuma": {
+    "mode": "tanka-launch",
+    "pneumaVersion": "^3.55.0"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
